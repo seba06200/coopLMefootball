@@ -21,8 +21,8 @@ function loadMatch() {
     const scoreInput = document.createElement("input");
     scoreInput.type = "number";
     scoreInput.placeholder = "Score équipe";
-    scoreInput.name = `score_${team}`;
-    scoreInput.value = localStorage.getItem(`score_${dayIndex}_${matchIndex}_${team}`) || "";
+    scoreInput.name = `score_${team}_${dayIndex}_${matchIndex}`;
+    scoreInput.value = localStorage.getItem(scoreInput.name) || "";
     section.innerHTML = `<h3>${team}</h3>`;
     section.appendChild(scoreInput);
 
@@ -34,8 +34,8 @@ function loadMatch() {
       const butsInput = document.createElement("input");
       butsInput.type = "number";
       butsInput.placeholder = "Buts";
-      butsInput.name = `buts_${player}`;
-      butsInput.value = localStorage.getItem(`buts_${dayIndex}_${matchIndex}_${player}`) || "";
+      butsInput.name = `buts_${player}_${dayIndex}_${matchIndex}`;
+      butsInput.value = localStorage.getItem(butsInput.name) || "";
       butsInput.style.width = "50px";
       butsInput.style.marginRight = "10px";
 
@@ -47,8 +47,8 @@ function loadMatch() {
       noteInput.type = "number";
       noteInput.placeholder = "Note";
       noteInput.step = "0.1";
-      noteInput.name = `note_${player}`;
-      noteInput.value = localStorage.getItem(`note_${dayIndex}_${matchIndex}_${player}`) || "";
+      noteInput.name = `note_${player}_${dayIndex}_${matchIndex}`;
+      noteInput.value = localStorage.getItem(noteInput.name) || "";
       noteInput.style.width = "60px";
 
       line.appendChild(butsInput);
@@ -70,7 +70,7 @@ function loadMatch() {
     e.preventDefault();
     const formData = new FormData(form);
     for (let [key, value] of formData.entries()) {
-      localStorage.setItem(`${key}_${dayIndex}_${matchIndex}`, value);
+      localStorage.setItem(key, value);
     }
     alert("Scores enregistrés !");
   };
