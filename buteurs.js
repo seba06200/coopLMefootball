@@ -1,21 +1,20 @@
-function getButs(key) {
-  return parseInt(localStorage.getItem(key)) || 0;
-}
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-function generateButeurClassement() {
+async function generateButeurClassement() {
   const buts = {};
 
   Object.values(teams).flat().forEach(joueur => {
     buts[joueur] = 0;
   });
 
-  calendar.forEach((day, dayIndex) => {
-    day.matches.forEach((match, matchIndex) => {
-      const joueurs = [...teams[match.home], ...teams[match.away]];
-      joueurs.forEach(joueur => {
-        const b = getButs(`buts_${joueur}_${dayIndex}_${matchIndex}`);
-        buts[joueur] += b;
-      });
+  const querySnapshot = await getDocs(collection(db, "matches"));
+  querySnapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    Object.entries(data).forEach(([key, value]) => {
+      if (key.startsWith("buts_")) {
+        const joueur = key.replace("buts_", "");
+        buts[joueur] += parseInt(value) || 0;
+      }
     });
   });
 
