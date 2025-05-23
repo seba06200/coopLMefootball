@@ -20,7 +20,7 @@ function loadMatch() {
     const section = document.createElement("section");
     const scoreInput = document.createElement("input");
     scoreInput.type = "number";
-    scoreInput.placeholder = "Score";
+    scoreInput.placeholder = "Score équipe";
     scoreInput.name = `score_${team}`;
     scoreInput.value = localStorage.getItem(`score_${dayIndex}_${matchIndex}_${team}`) || "";
     section.innerHTML = `<h3>${team}</h3>`;
@@ -28,18 +28,33 @@ function loadMatch() {
 
     const players = Object.entries(teams).find(([name]) => name === team)[1];
     players.forEach(player => {
+      const line = document.createElement("div");
+      line.style.margin = "4px 0";
+
+      const butsInput = document.createElement("input");
+      butsInput.type = "number";
+      butsInput.placeholder = "Buts";
+      butsInput.name = `buts_${player}`;
+      butsInput.value = localStorage.getItem(`buts_${dayIndex}_${matchIndex}_${player}`) || "";
+      butsInput.style.width = "50px";
+      butsInput.style.marginRight = "10px";
+
       const pLabel = document.createElement("label");
       pLabel.innerText = player;
+      pLabel.style.marginRight = "10px";
+
       const noteInput = document.createElement("input");
       noteInput.type = "number";
-      noteInput.min = 0;
-      noteInput.max = 10;
-      noteInput.step = 0.1;
+      noteInput.placeholder = "Note";
+      noteInput.step = "0.1";
       noteInput.name = `note_${player}`;
       noteInput.value = localStorage.getItem(`note_${dayIndex}_${matchIndex}_${player}`) || "";
-      section.appendChild(document.createElement("br"));
-      section.appendChild(pLabel);
-      section.appendChild(noteInput);
+      noteInput.style.width = "60px";
+
+      line.appendChild(butsInput);
+      line.appendChild(pLabel);
+      line.appendChild(noteInput);
+      section.appendChild(line);
     });
 
     form.appendChild(section);
