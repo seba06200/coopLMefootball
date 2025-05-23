@@ -14,9 +14,11 @@
       <a href="index.html">Journées</a>
       <a href="classement.html">Classement</a>
       <a href="ballon.html">Ballon d'or</a>
+      <a href="buteurs.html">Buteurs</a>
     </nav>
   </header>
   <main>
+    <button id="export-csv">📥 Exporter les scores (CSV)</button>
     <table id="classement-table">
       <thead>
         <tr>
@@ -30,8 +32,9 @@
     </table>
   </main>
   <script type="module" src="firebase.js"></script>
-<script src="teams.js"></script>
-<script src="calendar.js"></script>
-<script type="module" src="classement.js"></script>
+  <script src="teams.js"></script>
+  <script src="calendar.js"></script>
+  <script type="module" src="classement.js"></script>
+  <script type="module" src="export.js"></script>
 </body>
 </html>
