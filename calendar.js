@@ -1,6 +1,6 @@
 const calendar = [
   {
-    "Jour": 1,
+    "day": 1,
     "matches": [
       {
         "home": "Les Charognards",
@@ -21,7 +21,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 2,
+    "day": 2,
     "matches": [
       {
         "home": "Les Charognards",
@@ -42,7 +42,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 3,
+    "day": 3,
     "matches": [
       {
         "home": "Les Charognards",
@@ -63,7 +63,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 4,
+    "day": 4,
     "matches": [
       {
         "home": "Les Charognards",
@@ -84,7 +84,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 5,
+    "day": 5,
     "matches": [
       {
         "home": "Les Charognards",
@@ -105,7 +105,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 6,
+    "day": 6,
     "matches": [
       {
         "home": "Les Charognards",
@@ -126,7 +126,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 7,
+    "day": 7,
     "matches": [
       {
         "home": "Les Charognards",
@@ -147,7 +147,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 8,
+    "day": 8,
     "matches": [
       {
         "home": "KFC",
@@ -168,7 +168,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 9,
+    "day": 9,
     "matches": [
       {
         "home": "Rocher phocéen",
@@ -189,7 +189,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 10,
+    "day": 10,
     "matches": [
       {
         "home": "PastaChorizo FC",
@@ -210,7 +210,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 11,
+    "day": 11,
     "matches": [
       {
         "home": "FC District",
@@ -231,7 +231,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 12,
+    "day": 12,
     "matches": [
       {
         "home": "Crazy Dogs Bikers",
@@ -252,7 +252,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 13,
+    "day": 13,
     "matches": [
       {
         "home": "Lyonissa",
@@ -273,7 +273,7 @@ const calendar = [
     ]
   },
   {
-    "Jour": 14,
+    "day": 14,
     "matches": [
       {
         "home": "Les BrozArtiste",
