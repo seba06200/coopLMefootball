@@ -1,21 +1,20 @@
-function getNote(key) {
-  return parseFloat(localStorage.getItem(key)) || 0;
-}
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-function generateBallonClassement() {
+async function generateBallonClassement() {
   const notes = {};
 
   Object.values(teams).flat().forEach(joueur => {
     notes[joueur] = 0;
   });
 
-  calendar.forEach((day, dayIndex) => {
-    day.matches.forEach((match, matchIndex) => {
-      const joueurs = [...teams[match.home], ...teams[match.away]];
-      joueurs.forEach(joueur => {
-        const note = getNote(`note_${joueur}_${dayIndex}_${matchIndex}`);
-        notes[joueur] += note;
-      });
+  const querySnapshot = await getDocs(collection(db, "matches"));
+  querySnapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    Object.entries(data).forEach(([key, value]) => {
+      if (key.startsWith("note_")) {
+        const joueur = key.replace("note_", "");
+        notes[joueur] += parseFloat(value) || 0;
+      }
     });
   });
 
