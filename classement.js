@@ -1,8 +1,6 @@
-function getMatchScore(key) {
-  return parseInt(localStorage.getItem(key)) || 0;
-}
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-function generateClassement() {
+async function generateClassement() {
   const scores = {};
   const bp = {};
   const bc = {};
@@ -13,14 +11,15 @@ function generateClassement() {
     bc[team] = 0;
   });
 
-  calendar.forEach((day, dayIndex) => {
-    day.matches.forEach((match, matchIndex) => {
-      const home = match.home;
-      const away = match.away;
-      const homeKey = `score_${home}_${dayIndex}_${matchIndex}`;
-      const awayKey = `score_${away}_${dayIndex}_${matchIndex}`;
-      const scoreHome = getMatchScore(homeKey);
-      const scoreAway = getMatchScore(awayKey);
+  const querySnapshot = await getDocs(collection(db, "matches"));
+  querySnapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    const matchTeams = Object.keys(data).filter(key => key.startsWith("score_")).map(k => k.split("_")[1]);
+
+    if (matchTeams.length === 2) {
+      const [home, away] = matchTeams;
+      const scoreHome = parseInt(data[`score_${home}`]) || 0;
+      const scoreAway = parseInt(data[`score_${away}`]) || 0;
 
       bp[home] += scoreHome;
       bp[away] += scoreAway;
@@ -35,7 +34,7 @@ function generateClassement() {
         scores[home] += 1;
         scores[away] += 1;
       }
-    });
+    }
   });
 
   const classement = Object.keys(teams).map(team => ({
