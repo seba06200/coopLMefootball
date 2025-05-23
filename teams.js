@@ -1,0 +1,1 @@
+const teams = {"Les Charognards": ["Nico", "Chevreuil", "Revo"], "Les BrozArtiste": ["Loky", "Bénito"], "Lyonissa": ["Neista", "Jessimovic", "Seba"], "Crazy Dogs Bikers": ["Juju", "Nono"], "FC District": ["Guiguiche", "Fanacium"], "PastaChorizo FC": ["Pasta", "Luizovich"], "Rocher phocéen": ["Morreil", "Bibiche"], "KFC": ["Feisty", "Kdesign"]};
