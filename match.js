@@ -1,11 +1,14 @@
+import { collection, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
 function getParam(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
 
-function loadMatch() {
+async function loadMatch() {
   const dayIndex = parseInt(getParam("day"));
   const matchIndex = parseInt(getParam("match"));
   const match = calendar[dayIndex].matches[matchIndex];
+  const matchId = `day${dayIndex}_match${matchIndex}`;
 
   const container = document.getElementById("match-container");
   container.innerHTML = "";
@@ -16,13 +19,17 @@ function loadMatch() {
 
   const form = document.createElement("form");
 
+  const docRef = doc(collection(db, "matches"), matchId);
+  const docSnap = await getDoc(docRef);
+  const matchData = docSnap.exists() ? docSnap.data() : {};
+
   [match.home, match.away].forEach((team) => {
     const section = document.createElement("section");
     const scoreInput = document.createElement("input");
     scoreInput.type = "number";
     scoreInput.placeholder = "Score équipe";
-    scoreInput.name = `score_${team}_${dayIndex}_${matchIndex}`;
-    scoreInput.value = localStorage.getItem(scoreInput.name) || "";
+    scoreInput.name = `score_${team}`;
+    scoreInput.value = matchData[`score_${team}`] || "";
     section.innerHTML = `<h3>${team}</h3>`;
     section.appendChild(scoreInput);
 
@@ -34,8 +41,8 @@ function loadMatch() {
       const butsInput = document.createElement("input");
       butsInput.type = "number";
       butsInput.placeholder = "Buts";
-      butsInput.name = `buts_${player}_${dayIndex}_${matchIndex}`;
-      butsInput.value = localStorage.getItem(butsInput.name) || "";
+      butsInput.name = `buts_${player}`;
+      butsInput.value = matchData[`buts_${player}`] || "";
       butsInput.style.width = "50px";
       butsInput.style.marginRight = "10px";
 
@@ -47,8 +54,8 @@ function loadMatch() {
       noteInput.type = "number";
       noteInput.placeholder = "Note";
       noteInput.step = "0.1";
-      noteInput.name = `note_${player}_${dayIndex}_${matchIndex}`;
-      noteInput.value = localStorage.getItem(noteInput.name) || "";
+      noteInput.name = `note_${player}`;
+      noteInput.value = matchData[`note_${player}`] || "";
       noteInput.style.width = "60px";
 
       line.appendChild(butsInput);
@@ -66,13 +73,15 @@ function loadMatch() {
   submitBtn.type = "submit";
   form.appendChild(submitBtn);
 
-  form.onsubmit = (e) => {
+  form.onsubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
+    const data = {};
     for (let [key, value] of formData.entries()) {
-      localStorage.setItem(key, value);
+      data[key] = value;
     }
-    alert("Scores enregistrés !");
+    await setDoc(docRef, data);
+    alert("Scores enregistrés dans Firestore !");
   };
 
   container.appendChild(form);
