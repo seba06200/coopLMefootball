@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,17 +10,20 @@
 <body>
   <header>
     <h1>🏆 Compétition E-Football COOP 🏆</h1>
-    <nav></nav>
+    <nav>
+      <a href="index.html">Journées</a>
+      <a href="classement.html">Classement</a>
+      <a href="ballon.html">Ballon d'or</a>
+      <a href="buteurs.html">Buteurs</a>
+    </nav>
   </header>
   <main id="content">
     <h2>📅 Journées</h2>
     <ul id="matchdays-list"></ul>
   </main>
 
-  <!-- ✅ Charger d'abord calendar.js -->
   <script src="calendar.js"></script>
 
-  <!-- ✅ Ensuite, module Firebase + logique -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
@@ -37,18 +41,6 @@
     const db = getFirestore(app);
     window.db = db;
 
-    function buildNav() {
-      const nav = document.querySelector("nav");
-      if (nav) {
-        nav.innerHTML = `
-          <a href="index.html">Journées</a>
-          <a href="classement.html">Classement</a>
-          <a href="ballon.html">Ballon d'or</a>
-          <a href="buteurs.html">Buteurs</a>
-        `;
-      }
-    }
-
     async function buildMatchdays() {
       const list = document.getElementById("matchdays-list");
       if (!list || typeof calendar === "undefined") {
@@ -61,7 +53,7 @@
       querySnapshot.forEach(docSnap => {
         const data = docSnap.data();
         const hasScore = Object.entries(data).some(([k, v]) =>
-          k.startsWith("score_") && v !== "" && v !== null && v !== undefined
+          k.startsWith("score_") && !isNaN(parseInt(v)) && parseInt(v) >= 0
         );
         if (hasScore) scoreMap[docSnap.id] = true;
       });
@@ -82,7 +74,6 @@
       });
     }
 
-    buildNav();
     buildMatchdays();
   </script>
 </body>
