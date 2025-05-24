@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,12 +9,7 @@
 <body>
   <header>
     <h1>🏆 Classement</h1>
-    <nav>
-      <a href="index.html">Journées</a>
-      <a href="classement.html">Classement</a>
-      <a href="ballon.html">Ballon d'or</a>
-      <a href="buteurs.html">Buteurs</a>
-    </nav>
+    <nav></nav> <!-- ✅ Vide : sera rempli dynamiquement -->
   </header>
   <main>
     <button id="export-csv">📥 Exporter les scores (CSV)</button>
@@ -36,5 +30,6 @@
   <script src="calendar.js"></script>
   <script type="module" src="classement.js"></script>
   <script type="module" src="export.js"></script>
+  <script type="module" src="main.js"></script> <!-- ✅ pour injecter le menu -->
 </body>
 </html>
