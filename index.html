@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,60 +21,8 @@
     <h2>📅 Journées</h2>
     <ul id="matchdays-list"></ul>
   </main>
-
   <script src="calendar.js"></script>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyC9i9jx7Wz1RBYx8MziXOdfVtu7Si64njvo",
-      authDomain: "competition-foot.firebaseapp.com",
-      projectId: "competition-foot",
-      storageBucket: "competition-foot.appspot.com",
-      messagingSenderId: "731546807160",
-      appId: "1:731546807160:web:829b3101ee86d9a83bf68d"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    window.db = db;
-
-    async function buildMatchdays() {
-      const list = document.getElementById("matchdays-list");
-      if (!list || typeof calendar === "undefined") {
-        console.warn("Le calendrier n'est pas chargé.");
-        return;
-      }
-
-      const scoreMap = {};
-      const querySnapshot = await getDocs(collection(db, "matches"));
-      querySnapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const hasScore = Object.entries(data).some(([k, v]) =>
-          k.startsWith("score_") && !isNaN(parseInt(v)) && parseInt(v) >= 0
-        );
-        if (hasScore) scoreMap[docSnap.id] = true;
-      });
-
-      calendar.forEach((day, i) => {
-        const dayEl = document.createElement("li");
-        let matchList = "<strong>Journée " + day.day + "</strong><ul>";
-
-        day.matches.forEach((m, idx) => {
-          const matchId = `day${i}_match${idx}`;
-          const check = scoreMap[matchId] ? " ✔️" : "";
-          matchList += `<li><a href="match.html?day=${i}&match=${idx}">${m.home} vs ${m.away}</a>${check}</li>`;
-        });
-
-        matchList += "</ul>";
-        dayEl.innerHTML = matchList;
-        list.appendChild(dayEl);
-      });
-    }
-
-    buildMatchdays();
-  </script>
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
