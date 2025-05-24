@@ -15,7 +15,11 @@ function buildNav() {
 
 async function buildMatchdays() {
   const list = document.getElementById("matchdays-list");
-  if (!list) return;
+  if (!list || typeof calendar === "undefined") return;
+
+  list.style.listStyle = "none";
+  list.style.textAlign = "center";
+  list.style.padding = "0";
 
   const scoreMap = {};
   const querySnapshot = await getDocs(collection(db, "matches"));
@@ -29,14 +33,20 @@ async function buildMatchdays() {
 
   calendar.forEach((day, i) => {
     const dayEl = document.createElement("li");
-    let matchList = "<strong>Journée " + day.day + "</strong><ul>";
+    dayEl.style.marginBottom = "20px";
+    dayEl.style.border = "1px solid #ccc";
+    dayEl.style.borderRadius = "10px";
+    dayEl.style.padding = "10px";
+    dayEl.style.background = "#f9f9f9";
+    dayEl.style.maxWidth = "600px";
+    dayEl.style.margin = "10px auto";
 
+    let matchList = "<strong style='font-size: 18px;'>Journée " + day.day + "</strong><ul style='padding:0'>";
     day.matches.forEach((m, idx) => {
       const matchId = `day${i}_match${idx}`;
       const check = scoreMap[matchId] ? " ✔️" : "";
-      matchList += \`<li><a href="match.html?day=\${i}&match=\${idx}">\${m.home} vs \${m.away}</a>\${check}</li>\`;
+      matchList += \`<li style='margin: 6px 0;'><a href="match.html?day=\${i}&match=\${idx}">\${m.home} vs \${m.away}</a>\${check}</li>\`;
     });
-
     matchList += "</ul>";
     dayEl.innerHTML = matchList;
     list.appendChild(dayEl);
