@@ -12,7 +12,7 @@
 <body>
 
   <header>
-    <h1>🏆 Compétition E-Football COOP</h1>
+    <h1>🏆 Compétition E-Football COOP 🏆</h1>
     <nav>
       <a href="index.html">Journées</a>
       <a href="classement.html">Classement</a>
@@ -51,5 +51,14 @@ const calendar = [
 
 </script>
 <script type="module" src="ballon.js"></script>
+<script>
+  const links = document.querySelectorAll("nav a");
+  const currentPage = location.pathname.split("/").pop();
+  links.forEach(link => {
+    if (link.getAttribute("href") === currentPage) {
+      link.classList.add("active");
+    }
+  });
+</script>  
 </body>
 </html>
