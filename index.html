@@ -26,7 +26,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-    // calendar.js inline
     const calendar = [
       { day: 1, matches: [ { home: "Les Charognards", away: "Les BrozArtiste" }, { home: "Lyonissa", away: "Crazy Dogs Bikers" }, { home: "FC District", away: "PastaChorizo FC" }, { home: "Rocher phocéen", away: "KFC" } ] },
       { day: 2, matches: [ { home: "Les Charognards", away: "Lyonissa" }, { home: "Les BrozArtiste", away: "Crazy Dogs Bikers" }, { home: "Rocher phocéen", away: "FC District" }, { home: "PastaChorizo FC", away: "KFC" } ] },
@@ -70,10 +69,10 @@
       calendar.forEach((day, i) => {
         const li = document.createElement("li");
         li.innerHTML = "<strong style='font-size:18px'>Journée " + day.day + "</strong><ul>" +
-          day.matches.map((m, idx) => {
-            const id = `day${i}_match${idx}`;
+          day.matches.map((m, j) => {
+            const id = `day${i}_match${j}`;
             const check = scoreMap[id] ? " ✔️" : "";
-            return `<li><a href="match.html?day=${i}&match=${idx}">${m.home} vs ${m.away}</a>${check}</li>`;
+            return `<li><a href="match.html?day=${i}&match=${j}">${m.home} vs ${m.away}</a>${check}</li>`;
           }).join("") + "</ul>";
         list.appendChild(li);
       });
