@@ -83,3 +83,10 @@ button {
 button:hover {
   background: #005ea0;
 }
+
+nav a.active {
+  background-color: #005ea0;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
