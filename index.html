@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,6 +5,7 @@
   <title>Compétition E-Football COOP</title>
   <meta name="robots" content="noindex">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
   <header>
@@ -17,6 +17,7 @@
       <a href="buteurs.html">Buteurs</a>
     </nav>
   </header>
+
   <main id="content">
     <h2>📅 Journées</h2>
     <ul id="matchdays-list"></ul>
@@ -42,6 +43,17 @@
       { day: 13, matches: [ { home: "Rocher phocéen", away: "Les Charognards" }, { home: "KFC", away: "Crazy Dogs Bikers" }, { home: "Les BrozArtiste", away: "FC District" }, { home: "Lyonissa", away: "PastaChorizo FC" } ] },
       { day: 14, matches: [ { home: "KFC", away: "Les Charognards" }, { home: "Les BrozArtiste", away: "Rocher phocéen" }, { home: "Crazy Dogs Bikers", away: "PastaChorizo FC" }, { home: "FC District", away: "Lyonissa" } ] }
     ];
+
+    const teams = {
+      "Les Charognards": ["Nico", "Chevreuil", "Revo"],
+      "Les BrozArtiste": ["Loky", "Bénito"],
+      "Lyonissa": ["Neista", "Jessimovic", "Seba"],
+      "Crazy Dogs Bikers": ["Juju", "Nono"],
+      "FC District": ["Guiguiche", "Fanacium"],
+      "PastaChorizo FC": ["Pasta", "Luizovich"],
+      "Rocher phocéen": ["Morreil", "Bibiche"],
+      "KFC": ["Feisty", "Kdesign"]
+    };
 
     const app = initializeApp({
       apiKey: "AIzaSyC9i9jx7Wz1RBYx8MziXOdfVtu7Si64njvo",
@@ -69,10 +81,10 @@
       calendar.forEach((day, i) => {
         const li = document.createElement("li");
         li.innerHTML = "<strong style='font-size:18px'>Journée " + day.day + "</strong><ul>" +
-          day.matches.map((m, j) => {
-            const id = `day${i}_match${j}`;
+          day.matches.map((m, idx) => {
+            const id = `day${i}_match${idx}`;
             const check = scoreMap[id] ? " ✔️" : "";
-            return `<li><a href="match.html?day=${i}&match=${j}">${m.home} vs ${m.away}</a>${check}</li>`;
+            return `<li><a href="match.html?day=${i}&match=${idx}">${m.home} vs ${m.away}</a>${check}</li>`;
           }).join("") + "</ul>";
         list.appendChild(li);
       });
@@ -80,5 +92,6 @@
 
     buildMatchdays();
   </script>
+  <script src="export_journees.js"></script>
 </body>
 </html>
