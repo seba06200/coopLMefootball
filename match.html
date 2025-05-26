@@ -54,15 +54,80 @@
       { day: 14, matches: [ { home: "KFC", away: "Les Charognards" }, { home: "Les BrozArtiste", away: "Rocher phocéen" }, { home: "Crazy Dogs Bikers", away: "PastaChorizo FC" }, { home: "FC District", away: "Lyonissa" } ] }
     ];
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const day = parseInt(urlParams.get("day"));
-    const match = parseInt(urlParams.get("match"));
+    const teams = {
+      "Les Charognards": ["Nico", "Chevreuil", "Revo"],
+      "Les BrozArtiste": ["Loky", "Bénito"],
+      "Lyonissa": ["Neista", "Jessimovic", "Seba"],
+      "Crazy Dogs Bikers": ["Juju", "Nono"],
+      "FC District": ["Guiguiche", "Fanacium"],
+      "PastaChorizo FC": ["Pasta", "Luizovich"],
+      "Rocher phocéen": ["Morreil", "Bibiche"],
+      "KFC": ["Feisty", "Kdesign"]
+    };
+
+    const params = new URLSearchParams(location.search);
+    const day = parseInt(params.get("day"));
+    const match = parseInt(params.get("match"));
     const matchData = calendar[day].matches[match];
 
-    document.getElementById("match-container").innerHTML = `
-      <h2>${matchData.home} vs ${matchData.away}</h2>
-      <p>Match de la journée ${calendar[day].day}</p>
-    `;
+    const container = document.getElementById("match-container");
+    container.innerHTML = `<h2>${matchData.home} vs ${matchData.away}</h2>`;
+
+    const form = document.createElement("form");
+
+    [matchData.home, matchData.away].forEach(team => {
+      const section = document.createElement("section");
+      section.innerHTML = `<h3>${team}</h3>`;
+
+      const scoreInput = document.createElement("input");
+      scoreInput.type = "number";
+      scoreInput.placeholder = "Score équipe";
+      scoreInput.name = `score_${team}`;
+      section.appendChild(scoreInput);
+
+      const players = teams[team];
+      players.forEach(player => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <label>${player}</label>
+          <input type="number" name="buts_${player}" placeholder="Buts" style="width:50px">
+          <input type="number" name="note_${player}" step="0.1" placeholder="Note" style="width:60px">
+        `;
+        section.appendChild(div);
+      });
+
+      form.appendChild(section);
+      form.appendChild(document.createElement("hr"));
+    });
+
+    const submit = document.createElement("button");
+    submit.textContent = "Valider";
+    submit.type = "submit";
+    form.appendChild(submit);
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((v, k) => data[k] = v);
+      const matchId = `day${day}_match${match}`;
+      await setDoc(doc(db, "matches", matchId), data);
+      alert("Match enregistré !");
+    };
+
+    container.appendChild(form);
+
+    // Charger les valeurs existantes
+    const matchId = `day${day}_match${match}`;
+    getDoc(doc(db, "matches", matchId)).then(docSnap => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        Object.entries(data).forEach(([k, v]) => {
+          const input = form.querySelector(`[name="${k}"]`);
+          if (input) input.value = v;
+        });
+      }
+    });
   </script>
 </body>
 </html>
