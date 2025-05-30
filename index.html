@@ -46,15 +46,6 @@
       { day: 14, matches: [ { home: "KFC", away: "Les Charognards" }, { home: "Les BrozArtiste", away: "Rocher phocéen" }, { home: "Crazy Dogs Bikers", away: "PastaChorizo FC" }, { home: "FC District", away: "Lyonissa" } ] }
     ];
 
-    const app = initializeApp({
-      apiKey: "AIzaSyC9i9jx7Wz1RBYx8MziXOdfVtu7Si64njvo",
-      authDomain: "competition-foot.firebaseapp.com",
-      projectId: "competition-foot",
-      storageBucket: "competition-foot.appspot.com",
-      messagingSenderId: "731546807160",
-      appId: "1:731546807160:web:829b3101ee86d9a83bf68d"
-    });
-
     const db = getFirestore(app);
 
     async function buildMatchdays() {
@@ -86,20 +77,20 @@
 
   <script src="export_journees.js"></script>
   <script>
-    // Activation conditionnelle du bouton d'export
     if (new URLSearchParams(window.location.search).get("admin") === "1") {
       const exportBtn = document.getElementById("export-btn");
-      exportBtn.style.display = "block";
-      exportBtn.addEventListener("click", () => {
-        if (typeof exportAllMatchdays === "function") {
-          exportAllMatchdays();
-        } else {
-          alert("Fonction d'export non disponible.");
-        }
-      });
+      if (exportBtn) {
+        exportBtn.style.display = "block";
+        exportBtn.addEventListener("click", () => {
+          if (typeof exportAllMatchdays === "function") {
+            exportAllMatchdays();
+          } else {
+            alert("Fonction d'export non disponible.");
+          }
+        });
+      }
     }
 
-    // Surlignage du lien actif dans la nav
     const links = document.querySelectorAll("nav a");
     const currentPage = location.pathname.split("/").pop();
     links.forEach(link => {
