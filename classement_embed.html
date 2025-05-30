@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Classement</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h2>Classement de la ligue</h2>
+  <button id="export-csv">📥 Exporter les scores (CSV)</button>
+  <table id="classement-table">
+    <thead><tr><th>Équipe</th><th>Points</th><th>BP</th><th>BC</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  </main>
+  
+  <script type="module" src="firebase.js"></script>
+  <script src="teams.js"></script>
+  <script type="module" src="classement.js"></script>
+  <script type="module" src="export.js"></script>
+
+</body>
+</html>
