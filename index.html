@@ -22,6 +22,9 @@
   <main id="content">
     <h2>📅 Journées 📅</h2>
     <ul id="matchdays-list"></ul>
+    
+    <!-- Bouton masqué par défaut -->
+    <button id="export-btn" style="display: none;">📥 Exporter toutes les journées</button>
   </main>
 
   <script type="module">
@@ -29,31 +32,11 @@
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
     const calendar = [
-      { day: 1, matches: [ { home: "Les Charognards", away: "Les BrozArtiste" }, { home: "Lyonissa", away: "Crazy Dogs Bikers" }, { home: "FC District", away: "PastaChorizo FC" }, { home: "Rocher phocéen", away: "KFC" } ] },
-      { day: 2, matches: [ { home: "Les Charognards", away: "Lyonissa" }, { home: "Les BrozArtiste", away: "Crazy Dogs Bikers" }, { home: "Rocher phocéen", away: "FC District" }, { home: "PastaChorizo FC", away: "KFC" } ] },
-      { day: 3, matches: [ { home: "Les Charognards", away: "Crazy Dogs Bikers" }, { home: "Lyonissa", away: "Les BrozArtiste" }, { home: "KFC", away: "FC District" }, { home: "Rocher phocéen", away: "PastaChorizo FC" } ] },
-      { day: 4, matches: [ { home: "Les Charognards", away: "FC District" }, { home: "Crazy Dogs Bikers", away: "Rocher phocéen" }, { home: "Lyonissa", away: "KFC" }, { home: "Les BrozArtiste", away: "PastaChorizo FC" } ] },
-      { day: 5, matches: [ { home: "Les Charognards", away: "PastaChorizo FC" }, { home: "FC District", away: "Crazy Dogs Bikers" }, { home: "Lyonissa", away: "Rocher phocéen" }, { home: "Les BrozArtiste", away: "KFC" } ] },
-      { day: 6, matches: [ { home: "Les Charognards", away: "Rocher phocéen" }, { home: "PastaChorizo FC", away: "Lyonissa" }, { home: "FC District", away: "Les BrozArtiste" }, { home: "Crazy Dogs Bikers", away: "KFC" } ] },
-      { day: 7, matches: [ { home: "Les Charognards", away: "KFC" }, { home: "Rocher phocéen", away: "Les BrozArtiste" }, { home: "PastaChorizo FC", away: "Crazy Dogs Bikers" }, { home: "Lyonissa", away: "FC District" } ] },
-      { day: 8, matches: [ { home: "Les BrozArtiste", away: "Les Charognards" }, { home: "Crazy Dogs Bikers", away: "Lyonissa" }, { home: "PastaChorizo FC", away: "FC District" }, { home: "KFC", away: "Rocher phocéen" } ] },
-      { day: 9, matches: [ { home: "Lyonissa", away: "Les Charognards" }, { home: "Crazy Dogs Bikers", away: "Les BrozArtiste" }, { home: "FC District", away: "Rocher phocéen" }, { home: "KFC", away: "PastaChorizo FC" } ] },
-      { day: 10, matches: [ { home: "Crazy Dogs Bikers", away: "Les Charognards" }, { home: "Les BrozArtiste", away: "Lyonissa" }, { home: "FC District", away: "KFC" }, { home: "PastaChorizo FC", away: "Rocher phocéen" } ] },
-      { day: 11, matches: [ { home: "FC District", away: "Les Charognards" }, { home: "Rocher phocéen", away: "Crazy Dogs Bikers" }, { home: "KFC", away: "Lyonissa" }, { home: "PastaChorizo FC", away: "Les BrozArtiste" } ] },
-      { day: 12, matches: [ { home: "PastaChorizo FC", away: "Les Charognards" }, { home: "Crazy Dogs Bikers", away: "FC District" }, { home: "Rocher phocéen", away: "Lyonissa" }, { home: "KFC", away: "Les BrozArtiste" } ] },
-      { day: 13, matches: [ { home: "Rocher phocéen", away: "Les Charognards" }, { home: "KFC", away: "Crazy Dogs Bikers" }, { home: "Les BrozArtiste", away: "FC District" }, { home: "Lyonissa", away: "PastaChorizo FC" } ] },
-      { day: 14, matches: [ { home: "KFC", away: "Les Charognards" }, { home: "Les BrozArtiste", away: "Rocher phocéen" }, { home: "Crazy Dogs Bikers", away: "PastaChorizo FC" }, { home: "FC District", away: "Lyonissa" } ] }
+      // ... ton calendrier inchangé ...
     ];
 
     const teams = {
-      "Les Charognards": ["Nico", "Chevreuil", "Revo"],
-      "Les BrozArtiste": ["Loky", "Bénito"],
-      "Lyonissa": ["Neista", "Jessimovic", "Seba"],
-      "Crazy Dogs Bikers": ["Juju", "Nono"],
-      "FC District": ["Guiguiche", "Fanacium"],
-      "PastaChorizo FC": ["Pasta", "Luizovich"],
-      "Rocher phocéen": ["Morreil", "Bibiche"],
-      "KFC": ["Feisty", "Kdesign"]
+      // ... tes équipes inchangées ...
     };
 
     const app = initializeApp({
@@ -92,16 +75,31 @@
     }
 
     buildMatchdays();
+
+    // Affichage du bouton seulement si ?admin=1
+    if (new URLSearchParams(window.location.search).get("admin") === "1") {
+      const exportBtn = document.getElementById("export-btn");
+      exportBtn.style.display = "block";
+      exportBtn.addEventListener("click", () => {
+        // Appelle ton script d’export ici si nécessaire
+        if (typeof exportAllMatchdays === 'function') {
+          exportAllMatchdays(); // Par exemple si défini dans export_journees.js
+        } else {
+          alert("Fonction d'export non disponible.");
+        }
+      });
+    }
   </script>
+
   <script src="export_journees.js"></script>
   <script>
-  const links = document.querySelectorAll("nav a");
-  const currentPage = location.pathname.split("/").pop();
-  links.forEach(link => {
-    if (link.getAttribute("href") === currentPage) {
-      link.classList.add("active");
-    }
-  });
-</script>
+    const links = document.querySelectorAll("nav a");
+    const currentPage = location.pathname.split("/").pop();
+    links.forEach(link => {
+      if (link.getAttribute("href") === currentPage) {
+        link.classList.add("active");
+      }
+    });
+  </script>
 </body>
 </html>
