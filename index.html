@@ -62,9 +62,9 @@
       const querySnapshot = await getDocs(collection(db, "matches"));
       querySnapshot.forEach(docSnap => {
         const data = docSnap.data();
-        const hasScore = Object.entries(data).some(([k, v]) =>
-          k.startsWith("score_") && !isNaN(parseInt(v)) && parseInt(v) >= 0
-        );
+        const s1 = parseInt(data.score_home);
+        const s2 = parseInt(data.score_away);
+        const hasScore = !isNaN(s1) && !isNaN(s2); // match validé même à 0-0
         if (hasScore) scoreMap[docSnap.id] = true;
       });
 
