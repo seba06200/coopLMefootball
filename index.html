@@ -56,30 +56,34 @@
 
     const db = getFirestore(app);
 
-    async function buildMatchdays() {
-      const list = document.getElementById("matchdays-list");
-      const scoreMap = {};
-      const querySnapshot = await getDocs(collection(db, "matches"));
-      querySnapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const s1 = parseInt(data.score_home);
-        const s2 = parseInt(data.score_away);
-        const hasScore = !isNaN(s1) && !isNaN(s2); // match validé même à 0-0
-        if (hasScore) scoreMap[docSnap.id] = true;
-      });
+async function buildMatchdays() {
+  const list = document.getElementById("matchdays-list");
+  const scoreMap = {};
 
-      calendar.forEach((day, i) => {
-        const li = document.createElement("li");
-        li.innerHTML = "<strong style='font-size:18px'>Journée " + day.day + "</strong><ul>" +
-          day.matches.map((m, idx) => {
-            const id = `day${i}_match${idx}`;
-            const check = scoreMap[id] ? " ✔️" : "";
-            return `<li><a href="match.html?day=${i}&match=${idx}">${m.home} vs ${m.away}</a>${check}</li>`;
-          }).join("") + "</ul>";
-        list.appendChild(li);
-      });
+  const querySnapshot = await getDocs(collection(db, "matches"));
+  querySnapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    const s1 = parseInt(data.score_home);
+    const s2 = parseInt(data.score_away);
+    const hasScore = !isNaN(s1) && !isNaN(s2); // 0-0 est accepté
+    if (hasScore) {
+      scoreMap[docSnap.id] = true;
     }
+  });
 
+  calendar.forEach((day, i) => {
+    const li = document.createElement("li");
+    li.innerHTML =
+      "<strong style='font-size:18px'>Journée " + day.day + "</strong><ul>" +
+      day.matches.map((m, idx) => {
+        const id = `day${i}_match${idx}`;
+        const check = scoreMap[id] ? " ✔️" : "";
+        return `<li><a href="match.html?day=${i}&match=${idx}">${m.home} vs ${m.away}</a>${check}</li>`;
+      }).join("") +
+      "</ul>";
+    list.appendChild(li);
+  });
+}
     buildMatchdays();
   </script>
 
